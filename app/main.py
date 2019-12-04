@@ -2,7 +2,7 @@
 
 from app.ml import Predictor
 import json
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, request
 
 main = Blueprint('main', __name__)
 predictor = Predictor()
@@ -10,10 +10,8 @@ predictor = Predictor()
 
 @main.route('/explain')
 def explain():
-    print(request.args)
     word = request.args.get('word')
     n_words = int(request.args.get('n_words'))
-
     return json.dumps(predictor.explain(word=word, n_words=n_words))
 
 
