@@ -1,5 +1,9 @@
 from gensim.models import Word2Vec
 from app.data_preparation import lemmatize_stemming
+import os
+import nltk
+nltk.data.path.append(os.getcwd())
+
 
 
 class Predictor:
