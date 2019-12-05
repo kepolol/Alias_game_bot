@@ -8,6 +8,11 @@ main = Blueprint('main', __name__)
 predictor = Predictor()
 
 
+@main.route('/')
+def home():
+    return json.dumps('Hello')
+
+
 @main.route('/explain')
 def explain():
     word = request.args.get('word')
