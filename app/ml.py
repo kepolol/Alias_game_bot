@@ -5,7 +5,6 @@ import nltk
 nltk.data.path.append(os.getcwd())
 
 
-
 class Predictor:
     def __init__(self):
         self.model = Word2Vec.load('data/word2vec.model')
