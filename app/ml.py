@@ -10,9 +10,15 @@ class Predictor:
         self.model = Word2Vec.load('data/word2vec.model')
 
     def explain(self, word, n_words):
-        ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word)], topn=n_words)
-        return [word[0] for word in ans_words]
+        try:
+            ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word)], topn=n_words)
+            return [word[0] for word in ans_words]
+        except KeyError:
+            return 'Wrong word'
 
     def guess(self, words, n_words):
-        ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word) for word in words], topn=n_words)
-        return [word[0] for word in ans_words]
+        try:
+            ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word) for word in words], topn=n_words)
+            return [word[0] for word in ans_words]
+        except KeyError:
+            return 'Wrong word'
