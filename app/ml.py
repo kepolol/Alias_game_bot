@@ -18,7 +18,9 @@ class Predictor:
 
     def guess(self, words, n_words):
         try:
-            ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word) for word in words], topn=n_words)
+            ans_words = self.model.wv.most_similar(
+                positive=[lemmatize_stemming(word) for word in words
+                          if lemmatize_stemming(word) in self.model.wv.vocab], topn=n_words)
             return [word[0] for word in ans_words]
-        except KeyError:
+        except ValueError:
             return 'Wrong word'
