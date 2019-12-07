@@ -21,7 +21,7 @@ class Predictor:
         try:
             ans_words = self.model.wv.most_similar(
                 positive=[lemmatize_stemming(word) for word in words
-                          if lemmatize_stemming(word) in vocab], topn=n_words)
+                          if lemmatize_stemming(word) in self.vocab], topn=n_words)
             return [word[0] for word in ans_words]
         except ValueError:
             return 'Wrong word'
