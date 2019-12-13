@@ -23,6 +23,5 @@ def explain():
 @main.route('/guess')
 def guess():
     words = request.args.getlist('words')
-    print(words)
     n_words = int(request.args.get('n_words'))
     return json.dumps(predictor.guess(words=words, n_words=n_words))

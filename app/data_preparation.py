@@ -1,6 +1,7 @@
 import gensim.downloader as api
 import gensim
 from nltk.stem import WordNetLemmatizer, PorterStemmer
+from gensim.similarities.index import AnnoyIndexer
 import re
 from gensim.models import Word2Vec
 from os import cpu_count
@@ -8,8 +9,9 @@ from time import time
 
 
 def lemmatize_stemming(sentence):
-    stemmer = PorterStemmer()
-    return stemmer.stem(WordNetLemmatizer().lemmatize(sentence, pos='v'))
+    #stemmer = PorterStemmer()
+    #return stemmer.stem(WordNetLemmatizer().lemmatize(sentence, pos='v'))
+    return WordNetLemmatizer().lemmatize(sentence, pos='v')
 
 
 def preprocess(sentence):
@@ -54,10 +56,15 @@ if __name__ == '__main__':
     print('Learning...')
     start = time()
     epoch_num = 60
-    w2v_model = Word2Vec(min_count=20, window=2, size=300, sample=6e-5, alpha=0.03,
+    w2v_model = Word2Vec(min_count=1, window=5, size=50, sample=6e-5, alpha=0.03,
                          min_alpha=0.0007, negative=20, workers=cpu_count())
     w2v_model.build_vocab(preprocessed_sentences, progress_per=1)
     w2v_model.train(preprocessed_sentences, total_examples=w2v_model.corpus_count, epochs=epoch_num, report_delay=1.0)
     print('Learning complited for {}s'.format(time() - start))
     w2v_model.init_sims(replace=True)
-    w2v_model.save("data/word2vec.model")
+    w2v_model.save('data/word2vec.model')
+    start = time()
+    print('Annoy indexing...')
+    ann_model = AnnoyIndexer(w2v_model, 100)
+    ann_model.save('data/word2vec_idx.ann')
+    print('Annoy indexing complited for {}s'.format(time() - start))
