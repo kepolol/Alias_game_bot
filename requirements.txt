@@ -3,3 +3,4 @@ numpy==1.17.4
 gensim==3.8.1
 nltk==3.4.5
 annoy==1.16.2
+yadisk==1.2.14

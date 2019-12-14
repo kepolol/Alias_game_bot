@@ -6,6 +6,7 @@ from flask import Blueprint, request
 
 main = Blueprint('main', __name__)
 predictor = Predictor()
+print('Model ready!')
 
 
 @main.route('/')
