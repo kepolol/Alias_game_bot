@@ -1,12 +1,11 @@
 # main.py
 
-from app.ml import Player_guess, Player_explain
+from app.ml import Predictor
 import json
 from flask import Blueprint, request
 
 main = Blueprint('main', __name__)
-g = Player_guess()
-e = Player_explain()
+predictor = Predictor()
 print('Model ready!')
 
 
@@ -19,11 +18,11 @@ def home():
 def explain():
     word = request.args.get('word')
     n_words = int(request.args.get('n_words'))
-    return json.dumps(e.explain(word=word, n_words=n_words))
+    return json.dumps(predictor.explain(word=word, n_words=n_words))
 
 
 @main.route('/guess')
 def guess():
     words = request.args.getlist('words')
     n_words = int(request.args.get('n_words'))
-    return json.dumps(g.guess(words=words, n_words=n_words))
+    return json.dumps(predictor.guess(words=words, n_words=n_words))
