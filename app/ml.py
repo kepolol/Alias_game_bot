@@ -6,21 +6,13 @@ import nltk
 nltk.data.path.append(os.getcwd())
 
 
-class Predictor:
+class Player_guess:
     def __init__(self):
         self.model = Word2Vec.load('data/word2vec.model')
         self.vocab = self.model.wv.vocab
         self.annoy_index = AnnoyIndexer()
         self.annoy_index.load('data/word2vec_idx.ann')
         self.annoy_index.model = self.model
-
-    def explain(self, word, n_words):
-        try:
-            ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word)],
-                                                   topn=n_words, indexer=self.annoy_index)
-            return [word[0] for word in ans_words]
-        except KeyError:
-            return 'Wrong word'
 
     def guess(self, words, n_words):
         try:
@@ -29,4 +21,18 @@ class Predictor:
                           if lemmatize_stemming(word) in self.vocab], topn=n_words)
             return [word[0] for word in ans_words]
         except ValueError:
+            return 'Wrong word'
+
+
+class Player_explain:
+    def __init__(self):
+        self.model = Word2Vec.load('data/word2vec_expo.model')
+        self.vocab = self.model.wv.vocab
+
+    def explain(self, word, n_words):
+        try:
+            ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word)],
+                                                   topn=n_words)
+            return [word[0] for word in ans_words]
+        except KeyError:
             return 'Wrong word'
