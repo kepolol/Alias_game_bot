@@ -17,16 +17,23 @@ class Predictor:
     def explain(self, word, n_words):
         try:
             ans_words = self.model.wv.most_similar(positive=[lemmatize_stemming(word)],
-                                                   topn=n_words, indexer=self.annoy_index)
-            return [word[0] for word in ans_words]
+                                                   topn=n_words+1, indexer=self.annoy_index)
+            print([lemmatize_stemming(word[0]) for word in ans_words[1:]])
+            return [word[0] for word in ans_words[1:]]
         except KeyError:
             return 'Wrong word'
 
     def guess(self, words, n_words):
         try:
-            ans_words = self.model.wv.most_similar(
-                positive=[lemmatize_stemming(word) for word in words
-                          if lemmatize_stemming(word) in self.vocab], topn=n_words, indexer=self.annoy_index)
-            return [word[0] for word in ans_words]
+            if len(words) != 1:
+                ans_words = self.model.wv.most_similar(
+                    positive=[lemmatize_stemming(word) for word in words
+                              if lemmatize_stemming(word) in self.vocab], topn=n_words, indexer=self.annoy_index)
+                return [word[0] for word in ans_words]
+            else:
+                ans_words = self.model.wv.most_similar(
+                    positive=[lemmatize_stemming(word) for word in words
+                              if lemmatize_stemming(word) in self.vocab], topn=n_words+1, indexer=self.annoy_index)
+                return [word[0] for word in ans_words[1:]]
         except ValueError:
             return 'Wrong word'
