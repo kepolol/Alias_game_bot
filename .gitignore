@@ -13,7 +13,10 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-data/*
+data/*.ann
+data/*.ann.d
+data/*.model
+
 .eggs/
 lib/
 lib64/
